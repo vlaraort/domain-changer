@@ -133,7 +133,7 @@ async function getDirectories(path) {
 }
 
 function canBeLinked(file) {
-    if (fs.existsSync(path)) {
+    if (fs.existsSync(file)) {
         return fs.lstatSync(file).isSymbolicLink();
     }
     return true;
