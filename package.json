@@ -1,0 +1,18 @@
+{
+  "name": "domain-changer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "bin": {
+    "dom": "./index.js"
+  },
+  "author": "Víctor Lara <victorlara@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^8.0.1",
+    "inquirer": "^6.3.1"
+  }
+}
