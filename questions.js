@@ -45,6 +45,7 @@ module.exports = {
         type: 'list',
         name: 'default',
         message: 'What do you want to do?',
+        default: 1,
         choices: [{
             name: 'Create a new domain',
             value: 'newDomain'
