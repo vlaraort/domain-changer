@@ -48,10 +48,16 @@ module.exports = {
         choices: [{
             name: 'Create a new domain',
             value: 'newDomain'
-        },{
+        },
+        {
             name: 'Set an existing domain active',
             value: 'setDomain'
-        }, {
+        },
+        {
+            name: 'Delete an existing domain',
+            value: 'deleteDomain'
+        },
+        {
             name: 'Exit',
             value: 'exit'
         }]
@@ -61,5 +67,17 @@ module.exports = {
         name: 'selectDomain',
         message: 'Select one of your domains',
         choices: []
+    }],
+    deleteDomain: [{
+        type: 'list',
+        name: 'domainToDelete',
+        message: 'Select one of your domains to delete',
+        choices: []
+    },
+    {
+        type: 'confirm',
+        name: 'confirmDeleteDomain',
+        message: 'Are you sure do you want to delete it?',
+        default: false
     }],
 }

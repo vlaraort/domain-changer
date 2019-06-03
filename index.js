@@ -22,6 +22,9 @@ async function run() {
             case 'newDomain':
                 await createDomain();
                 break;
+            case 'deleteDomain':
+                await deleteDomain();
+                break;
         }
 
     }
@@ -74,6 +77,24 @@ async function createDomain() {
     }
 }
 
+async function deleteDomain() {
+    const domains = await getDirectories(baseFolderPath);
+
+    //  Push the domains to the promt
+    for (let domain of domains) {
+        questions.deleteDomain[0].choices.push(domain)
+    }
+
+    const { domainToDelete, confirmDeleteDomain } = await inquirer.prompt(questions.deleteDomain);
+    if(confirmDeleteDomain) {
+        const domainFilePath = getDomainPath(domainToDelete);
+        await fs.remove(domainFilePath)
+        console.log(`Success deleting ${domainToDelete} domain`)
+    }
+
+
+}
+
 async function setDomainActive(domain) {
     const domainFolderPath = getDomainPath(domain);
     const filesInDomain = await fs.readdir(domainFolderPath);
@@ -85,8 +106,7 @@ async function setDomainActive(domain) {
 async function setFileActive(file, domain) {
     const domainFilePath = path.join(getDomainPath(domain), file);
     const filePath = path.join(homedir, file);
-    const isSymLink = isSymbolicLink(filePath);
-    if (!isSymLink) {
+    if (!canBeLinked(filePath)) {
         console.log(`
             ${filePath} is not a Symlink.
             ${file} is not setted properly. Consider move it to a domain folder, and delete it from your user folder.
@@ -112,8 +132,8 @@ async function getDirectories(path) {
     return directories;
 }
 
-function isSymbolicLink(file) {
-    if(fs.existsSync(path)){
+function canBeLinked(file) {
+    if (fs.existsSync(path)) {
         return fs.lstatSync(file).isSymbolicLink();
     }
     return true;
