@@ -113,7 +113,10 @@ async function getDirectories(path) {
 }
 
 function isSymbolicLink(file) {
-    return fs.lstatSync(file).isSymbolicLink();
+    if(fs.existsSync(path)){
+        return fs.lstatSync(file).isSymbolicLink();
+    }
+    return true;
 }
 
 function getDomainPath(domainName) {
