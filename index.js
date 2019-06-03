@@ -85,9 +85,17 @@ async function setDomainActive(domain) {
 async function setFileActive(file, domain) {
     const domainFilePath = path.join(getDomainPath(domain), file);
     const filePath = path.join(homedir, file);
-    // ToDo: control this to ensure symlinks, and to not delete anything
-    await fs.removeSync(filePath)
-    await fs.ensureSymlink(domainFilePath, filePath)
+    const isSymLink = isSymbolicLink(filePath);
+    if (!isSymLink) {
+        console.log(`
+            ${filePath} is not a Symlink.
+            ${file} is not setted properly. Consider move it to a domain folder, and delete it from your user folder.
+        `)
+    } else {
+        await fs.removeSync(filePath)
+        await fs.ensureSymlink(domainFilePath, filePath)
+        console.log(`Success setting ${file} from ${domainFilePath}`)
+    }
 }
 
 //  FS Utils
@@ -102,6 +110,10 @@ async function getDirectories(path) {
         return fs.statSync(path + '/' + file).isDirectory();
     });
     return directories;
+}
+
+function isSymbolicLink(file) {
+    return fs.lstatSync(file).isSymbolicLink();
 }
 
 function getDomainPath(domainName) {
